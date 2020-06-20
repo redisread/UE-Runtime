@@ -2811,8 +2811,8 @@ void ComputeDynamicMeshRelevance(EShadingPath ShadingPath, bool bAddLightmapDens
 			View.NumVisibleDynamicMeshElements[EMeshPass::MobileInverseOpacity] += NumElements;
 		}
 	}
-
-#if WITH_EDITOR
+	 
+// #if WITH_EDITOR Victor
 	if (ViewRelevance.bDrawRelevance)
 	{
 		PassMask.Set(EMeshPass::EditorSelection);
@@ -2826,7 +2826,7 @@ void ComputeDynamicMeshRelevance(EShadingPath ShadingPath, bool bAddLightmapDens
 		PassMask.Set(EMeshPass::HitProxy);
 		View.NumVisibleDynamicMeshElements[EMeshPass::HitProxy] += NumElements;
 	}
-#endif
+//#endif 
 
 	if (ViewRelevance.bHasVolumeMaterialDomain)
 	{
