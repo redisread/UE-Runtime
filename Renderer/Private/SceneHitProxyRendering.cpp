@@ -66,7 +66,7 @@ public:
 	{
 		FMeshMaterialShader::GetShaderBindings(Scene, FeatureLevel, PrimitiveSceneProxy, MaterialRenderProxy, Material, DrawRenderState, ShaderElementData, ShaderBindings);
 
-#if WITH_EDITOR
+//#if WITH_EDITOR delete Victor
 		const FColorVertexBuffer* HitProxyIdBuffer = PrimitiveSceneProxy ? PrimitiveSceneProxy->GetCustomHitProxyIdBuffer() : nullptr;
 		if(HitProxyIdBuffer)
 		{
@@ -76,7 +76,7 @@ public:
 		{
 			ShaderBindings.Add(VertexFetch_HitProxyIdBuffer, GNullColorVertexBuffer.VertexBufferSRV);
 		}
-#endif
+//#endif
 	}
 protected:
 
@@ -522,7 +522,7 @@ void FMobileSceneRenderer::RenderHitProxies(FRHICommandListImmediate& RHICmdList
 	
 	PrepareViewRectsForRendering();
 
-#if WITH_EDITOR
+//#if WITH_EDITOR delete Victor
 	TRefCountPtr<IPooledRenderTarget> HitProxyRT;
 	TRefCountPtr<IPooledRenderTarget> HitProxyDepthRT;
 	InitHitProxyRender(RHICmdList, this, HitProxyRT, HitProxyDepthRT);
@@ -544,7 +544,7 @@ void FMobileSceneRenderer::RenderHitProxies(FRHICommandListImmediate& RHICmdList
 
 	check(RHICmdList.IsOutsideRenderPass());
 
-#endif
+//#endif
 }
 
 void FDeferredShadingSceneRenderer::RenderHitProxies(FRHICommandListImmediate& RHICmdList)

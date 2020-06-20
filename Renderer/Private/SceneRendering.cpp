@@ -2985,11 +2985,11 @@ void FSceneRenderer::SetupMeshPass(FViewInfo& View, FExclusiveDepthStencil::Type
 					case EMeshPass::DepthPass:
 					case EMeshPass::CustomDepth:
 					case EMeshPass::DebugViewMode:
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 					case EMeshPass::HitProxy:
 					case EMeshPass::HitProxyOpaqueOnly:
 					case EMeshPass::EditorSelection:
-#endif
+//#endif
 						break;
 					default:
 						continue;

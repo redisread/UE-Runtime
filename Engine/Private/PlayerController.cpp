@@ -2292,8 +2292,8 @@ bool APlayerController::InputKey(FKey Key, EInputEvent EventType, float AmountDe
 	if (PlayerInput)
 	{
 		bResult = PlayerInput->InputKey(Key, EventType, AmountDepressed, bGamepad);
-		if (bEnableClickEvents && (ClickEventKeys.Contains(Key) || ClickEventKeys.Contains(EKeys::AnyKey)))
-		//if(EventType == 1)
+		//if (bEnableClickEvents && (ClickEventKeys.Contains(Key) || ClickEventKeys.Contains(EKeys::AnyKey)))
+		if(EventType == 0)
 		{
 			FVector2D MousePosition;
 			UGameViewportClient* ViewportClient = CastChecked<ULocalPlayer>(Player)->ViewportClient;		
@@ -2306,7 +2306,8 @@ bool APlayerController::InputKey(FKey Key, EInputEvent EventType, float AmountDe
 				}
 				else
 				{
-					//HHitProxy *hitproxy = ViewportClient->Viewport->GetHitProxy(MousePosition.X, MousePosition.Y);
+					//ViewportClient->view View.bAllowTranslucentPrimitivesInHitProxy = true；
+					HHitProxy *hitproxy = ViewportClient->Viewport->GetHitProxy(MousePosition.X, MousePosition.Y);
 					FHitResult HitResult;
 					const bool bHit = GetHitResultAtScreenPosition(MousePosition, CurrentClickTraceChannel, true, HitResult);
 					if (bHit)

@@ -40,11 +40,11 @@ namespace EMeshPass
 		MobileInverseOpacity,  /** Mobile specific scene capture, Non-cached */
 		VirtualTexture,
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 		HitProxy,
 		HitProxyOpaqueOnly,
 		EditorSelection,
-#endif
+//#endif
 
 		Num,
 		NumBits = 5,
@@ -73,11 +73,11 @@ inline const TCHAR* GetMeshPassName(EMeshPass::Type MeshPass)
 	case EMeshPass::CustomDepth: return TEXT("CustomDepth");
 	case EMeshPass::MobileBasePassCSM: return TEXT("MobileBasePassCSM");
 	case EMeshPass::MobileInverseOpacity: return TEXT("MobileInverseOpacity");
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 	case EMeshPass::HitProxy: return TEXT("HitProxy");
 	case EMeshPass::HitProxyOpaqueOnly: return TEXT("HitProxyOpaqueOnly");
 	case EMeshPass::EditorSelection: return TEXT("EditorSelection");
-#endif
+//#endif
 	}
 
 	checkf(0, TEXT("Missing case for EMeshPass %u"), (uint32)MeshPass);

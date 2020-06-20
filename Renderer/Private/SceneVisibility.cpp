@@ -2291,7 +2291,7 @@ struct FRelevancePacket
 								}
 #endif
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Victor
 								if (StaticMeshRelevance.bSelectable)
 								{
 									if (View.bAllowTranslucentPrimitivesInHitProxy)
@@ -2303,7 +2303,7 @@ struct FRelevancePacket
 										DrawCommandPacket.AddCommandsForMesh(PrimitiveIndex, PrimitiveSceneInfo, StaticMeshRelevance, StaticMesh, Scene, bCanCache, EMeshPass::HitProxyOpaqueOnly);
 									}
 								}
-#endif
+//#endif
 
 								if (ViewRelevance.HasVelocity())
 								{
@@ -2736,7 +2736,7 @@ void ComputeDynamicMeshRelevance(EShadingPath ShadingPath, bool bAddLightmapDens
 			}
 #endif
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 			if (View.bAllowTranslucentPrimitivesInHitProxy)
 			{
 				PassMask.Set(EMeshPass::HitProxy);
@@ -2747,7 +2747,7 @@ void ComputeDynamicMeshRelevance(EShadingPath ShadingPath, bool bAddLightmapDens
 				PassMask.Set(EMeshPass::HitProxyOpaqueOnly);
 				View.NumVisibleDynamicMeshElements[EMeshPass::HitProxyOpaqueOnly] += NumElements;
 			}
-#endif
+//#endif
 
 			if (ViewRelevance.bVelocityRelevance)
 			{
