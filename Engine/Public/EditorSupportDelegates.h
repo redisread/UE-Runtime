@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 
 /** 
  * FEditorSupportDelegates
@@ -53,4 +53,4 @@ struct ENGINE_API FEditorSupportDelegates
 	static FOnScalarParameterDefaultChanged ScalarParameterDefaultChanged;
 };
 
-#endif // WITH_EDITOR
+//#endif // WITH_EDITOR

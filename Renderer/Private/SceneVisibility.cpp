@@ -2291,7 +2291,7 @@ struct FRelevancePacket
 								}
 #endif
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 								if (StaticMeshRelevance.bSelectable)
 								{
 									if (View.bAllowTranslucentPrimitivesInHitProxy)
@@ -2303,7 +2303,7 @@ struct FRelevancePacket
 										DrawCommandPacket.AddCommandsForMesh(PrimitiveIndex, PrimitiveSceneInfo, StaticMeshRelevance, StaticMesh, Scene, bCanCache, EMeshPass::HitProxyOpaqueOnly);
 									}
 								}
-#endif
+//#endif
 
 								if (ViewRelevance.HasVelocity())
 								{
@@ -4284,7 +4284,6 @@ bool FDeferredShadingSceneRenderer::InitViews(FRHICommandListImmediate& RHICmdLi
 	check(RHICmdList.IsOutsideRenderPass());
 
 	PreVisibilityFrameSetup(RHICmdList);
-
 	RHICmdList.ImmediateFlush(EImmediateFlushType::DispatchToRHIThread);
 
 	{
@@ -4300,8 +4299,8 @@ bool FDeferredShadingSceneRenderer::InitViews(FRHICommandListImmediate& RHICmdLi
 	FViewVisibleCommandsPerView ViewCommandsPerView;
 	ViewCommandsPerView.SetNum(Views.Num());
 
+	// 计算可视性
 	ComputeViewVisibility(RHICmdList, BasePassDepthStencilAccess, ViewCommandsPerView, DynamicIndexBufferForInitViews, DynamicVertexBufferForInitViews, DynamicReadBufferForInitViews);
-
 	RHICmdList.ImmediateFlush(EImmediateFlushType::DispatchToRHIThread);
 
 	// This has to happen before Scene->IndirectLightingCache.UpdateCache, since primitives in View.IndirectShadowPrimitives need ILC updates

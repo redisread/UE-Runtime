@@ -44,7 +44,9 @@ FSimpleMulticastDelegate FEditorSupportDelegates::RedrawAllViewports;
 /** Called when the editor is about to cleanse an object that *must* be purged (such as when changing the active map or level) */
 FEditorSupportDelegates::FPrepareToCleanseEditorObject FEditorSupportDelegates::PrepareToCleanseEditorObject;
 /** Called when the editor is cleansing of transient references before a map change event */
+# endif
 FSimpleMulticastDelegate FEditorSupportDelegates::CleanseEditor;
+#if WITH_EDITOR
 /** Called when the world is modified */
 FSimpleMulticastDelegate FEditorSupportDelegates::WorldChange;
 /** Sent to force a property window rebuild */

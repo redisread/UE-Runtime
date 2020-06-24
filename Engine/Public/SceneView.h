@@ -1066,7 +1066,7 @@ public:
 	 */
 	FVector4 LensPrincipalPointOffsetScale;
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 	/** The set of (the first 64) groups' visibility info for this view */
 	uint64 EditorViewBitflag;
 
@@ -1084,7 +1084,7 @@ public:
 	FLinearColor SubduedSelectionOutlineColor;
 	/** True if any components are selected in isolation (independent of actor selection) */
 	bool bHasSelectedComponents;
-#endif
+//#endif
 
 	/**
 	 * The final settings for the current viewer position (blended together from many volumes).

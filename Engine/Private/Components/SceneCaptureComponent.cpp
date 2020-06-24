@@ -384,6 +384,8 @@ void USceneCaptureComponent::UpdateDeferredCaptures(FSceneInterface* Scene)
 
 	// Only update the scene captures associated with the current scene.
 	// Updating others not associated with the scene would cause invalid data to be rendered into the target
+	/*仅更新与当前场景关联的场景捕获。
+		更新与场景无关的其他对象将导致无效数据呈现到目标中*/
 	TArray< TWeakObjectPtr<USceneCaptureComponent> > SceneCapturesToUpdate;
 	SceneCapturesToUpdateMap.MultiFind(World, SceneCapturesToUpdate);
 	SceneCapturesToUpdate.Sort([](const TWeakObjectPtr<USceneCaptureComponent>& A, const TWeakObjectPtr<USceneCaptureComponent>& B)

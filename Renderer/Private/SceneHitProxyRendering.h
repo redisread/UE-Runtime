@@ -15,7 +15,7 @@ class FPrimitiveSceneProxy;
 class FScene;
 class FStaticMeshBatch;
 
-#if WITH_EDITOR
+// #if WITH_EDITOR Delete Victor
 
 class FHitProxyMeshProcessor : public FMeshPassProcessor
 {
@@ -72,4 +72,4 @@ private:
 	TMap<FName, int32> ActorNameToStencilIndex;
 };
 
-#endif
+//#endif

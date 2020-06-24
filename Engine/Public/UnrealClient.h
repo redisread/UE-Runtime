@@ -794,7 +794,11 @@ public:
 	virtual void Precache() {}
 	virtual void RedrawRequested(FViewport* Viewport) { Viewport->Draw(); }
 	virtual void RequestInvalidateHitProxy(FViewport* Viewport) { Viewport->InvalidateHitProxy(); }
+	
 	virtual void Draw(FViewport* Viewport,FCanvas* Canvas) {}
+	// @Victor
+	virtual void DrawHitProxy(FViewport* Viewport, FCanvas* Canvas) {}
+	// end
 	virtual bool ProcessScreenShots(FViewport* Viewport) { return false; }
 	virtual UWorld* GetWorld() const { return NULL; }
 	virtual struct FEngineShowFlags* GetEngineShowFlags() { return NULL; }

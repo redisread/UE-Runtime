@@ -2111,12 +2111,12 @@ FSceneRenderer::FSceneRenderer(const FSceneViewFamily* InViewFamily,FHitProxyCon
 
 		check(ViewInfo->ViewRect.Area() == 0);
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 		// Should we allow the user to select translucent primitives?
 		ViewInfo->bAllowTranslucentPrimitivesInHitProxy =
 			GEngine->AllowSelectTranslucent() ||		// User preference enabled?
 			!ViewInfo->IsPerspectiveProjection();		// Is orthographic view?
-#endif
+//#endif
 
 		// Batch the view's elements for later rendering.
 		if(ViewInfo->Drawer)
@@ -3627,6 +3627,7 @@ void FRendererModule::BeginRenderingViewFamily(FCanvas* Canvas, FSceneViewFamily
 
 	UWorld* World = nullptr;
 
+	// 开始往渲染线程添加任务之前先更新所有需要更新的Primitive
 	FScene* const Scene = ViewFamily->Scene->GetRenderScene();
 	if (Scene)
 	{
@@ -3638,21 +3639,27 @@ void FRendererModule::BeginRenderingViewFamily(FCanvas* Canvas, FSceneViewFamily
 		}
 	}
 
+	// 更新延迟渲染的Uniform
 	ENQUEUE_RENDER_COMMAND(UpdateDeferredCachedUniformExpressions)(
 		[](FRHICommandList& RHICmdList)
 		{
 			FMaterialRenderProxy::UpdateDeferredCachedUniformExpressions();
 		});
 
+
+	// VR
 	ENQUEUE_RENDER_COMMAND(UpdateFastVRamConfig)(
 		[](FRHICommandList& RHICmdList)
 		{
 			GFastVRamConfig.Update();
 		});
 
+
+	// 刷新画布
 	// Flush the canvas first.
 	Canvas->Flush_GameThread();
 
+	// 对每帧数据进行操作
 	if (Scene)
 	{
 		// We allow caching of per-frame, per-scene data
@@ -3668,7 +3675,7 @@ void FRendererModule::BeginRenderingViewFamily(FCanvas* Canvas, FSceneViewFamily
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 	{
 		extern TSharedRef<ISceneViewExtension, ESPMode::ThreadSafe> GetRendererViewExtension();
-
+		// 可以修改渲染线程上的视图参数的扩展。ViewExtensions
 		ViewFamily->ViewExtensions.Add(GetRendererViewExtension());
 	}
 #endif // !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
@@ -3689,6 +3696,7 @@ void FRendererModule::BeginRenderingViewFamily(FCanvas* Canvas, FSceneViewFamily
 		}
 
 		// Construct the scene renderer.  This copies the view family attributes into its own structures.
+		// 复制ViewFamily的属性到渲染结构
 		FSceneRenderer* SceneRenderer = FSceneRenderer::CreateSceneRenderer(ViewFamily, Canvas->GetHitProxyConsumer());
 
 		if (!SceneRenderer->ViewFamily.EngineShowFlags.HitProxies)

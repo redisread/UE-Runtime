@@ -38,6 +38,7 @@ DECLARE_DELEGATE_RetVal_TwoParams(bool, FCustomNavigationHandler, const uint32, 
 DECLARE_MULTICAST_DELEGATE_SevenParams(FOnInputAxisSignature, FViewport* /*InViewport*/, int32 /*ControllerId*/, FKey /*Key*/, float /*Delta*/, float /*DeltaTime*/, int32 /*NumSamples*/, bool /*bGamepad*/);
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnInputKeySignature, const FInputKeyEventArgs& /*EventArgs*/);
 
+
 /**
  * A game viewport (FViewport) is a high-level abstract interface for the
  * platform specific rendering, audio, and input subsystems.
@@ -166,6 +167,11 @@ public:
 	virtual TOptional<TSharedRef<SWidget>> MapCursor(FViewport* Viewport, const FCursorReply& CursorReply) override;
 	virtual void Precache() override;
 	virtual void Draw(FViewport* Viewport,FCanvas* SceneCanvas) override;
+
+	// @victor
+	virtual void DrawHitProxy(FViewport* Viewport, FCanvas* Canvas);
+	//
+
 	virtual bool ProcessScreenShots(FViewport* Viewport) override;
 	virtual TOptional<bool> QueryShowFocus(const EFocusCause InFocusCause) const override;
 	virtual void LostFocus(FViewport* Viewport) override;
@@ -1022,3 +1028,5 @@ private:
 	bool bUseMouseForTouchInEditor;
 #endif
 };
+
+

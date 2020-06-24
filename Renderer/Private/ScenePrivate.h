@@ -2473,9 +2473,9 @@ public:
 	TUniformBufferRef<FMobileDirectionalLightShaderParameters> MobileDirectionalLightUniformBuffers[NUM_LIGHTING_CHANNELS+1];
 	TUniformBufferRef<FMobileReflectionCaptureShaderParameters> MobileSkyReflectionUniformBuffer;
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 	TUniformBufferRef<FSceneTexturesUniformParameters> EditorSelectionPassUniformBuffer;
-#endif
+//#endif
 
 	// View from which ViewUniformBuffer was last updated.
 	const FViewInfo* CachedView;

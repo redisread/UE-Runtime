@@ -1554,6 +1554,7 @@ void FViewport::Draw( bool bShouldPresent /*= true */)
 			}
 		}
 
+
 		// Reset the camera cut flags if we are in a viewport that has a world
 		if (World)
 		{
@@ -1617,6 +1618,7 @@ const TArray<FColor>& FViewport::GetRawHitProxyData(FIntRect InRect)
 
 	const bool bIsRenderingStereo = GEngine->IsStereoscopic3D( this ) && this->IsStereoRenderingAllowed();
 
+	// 检测变化
 	bool bFetchHitProxyBytes = !bIsRenderingStereo && ( !bHitProxiesCached || (SizeY*SizeX) != CachedHitProxyData.Num() );
 
 	if( bIsRenderingStereo )
@@ -1626,6 +1628,7 @@ const TArray<FColor>& FViewport::GetRawHitProxyData(FIntRect InRect)
 		CachedHitProxyData.SetNumZeroed( SizeY * SizeX );
 	}
 	// If the hit proxy map isn't up to date, render the viewport client's hit proxies to it.
+	// @victor 
 	else if (!bHitProxiesCached)
 	{
 		EnqueueBeginRenderFrame(false);
@@ -1645,7 +1648,15 @@ const TArray<FColor>& FViewport::GetRawHitProxyData(FIntRect InRect)
 		UWorld* World = ViewportClient->GetWorld();
 		FCanvas Canvas(&HitProxyMap, &HitProxyMap, World, World ? World->FeatureLevel.GetValue() : GMaxRHIFeatureLevel, FCanvas::CDM_DeferDrawing, ViewportClient->ShouldDPIScaleSceneCanvas() ? ViewportClient->GetDPIScale() : 1.0f);
 		{
-			ViewportClient->Draw(this, &Canvas);
+			if(!this->ViewportClient->GetEngineShowFlags()->HitProxies)
+				ViewportClient->Draw(this, &Canvas);
+			else
+			{
+				ViewportClient->DrawHitProxy(this, &Canvas);
+				// @Victor
+				bFetchHitProxyBytes = true;
+			}
+
 		}
 		Canvas.Flush_GameThread();
 
@@ -1982,18 +1993,18 @@ ENGINE_API bool IsAltDown(FViewport* Viewport) { return (Viewport->KeyState(EKey
 /** Constructor */
 FViewport::FHitProxyMap::FHitProxyMap()
 {
-#if WITH_EDITOR
+//#if WITH_EDITOR delete Victor
 	FEditorSupportDelegates::CleanseEditor.AddRaw(this, &FViewport::FHitProxyMap::Invalidate);
-#endif // WITH_EDITOR
+//#endif // WITH_EDITOR
 }
 
 
 /** Destructor */
 FViewport::FHitProxyMap::~FHitProxyMap()
 {
-#if WITH_EDITOR
+// #if WITH_EDITOR delete Victor
 	FEditorSupportDelegates::CleanseEditor.RemoveAll(this);
-#endif // WITH_EDITOR
+//#endif // WITH_EDITOR delete Victor
 }
 
 

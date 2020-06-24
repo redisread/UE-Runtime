@@ -264,7 +264,10 @@ void FMobileSceneRenderer::InitViews(FRHICommandListImmediate& RHICmdList)
 
 	const FExclusiveDepthStencil::Type BasePassDepthStencilAccess = FExclusiveDepthStencil::DepthWrite_StencilWrite;
 
+	// 预设置可见性 
 	PreVisibilityFrameSetup(RHICmdList);
+
+	// 设置视口矩阵，包括视口投影矩阵和转换矩阵
 	ComputeViewVisibility(RHICmdList, BasePassDepthStencilAccess, ViewCommandsPerView, DynamicIndexBuffer, DynamicVertexBuffer, DynamicReadBuffer);
 
 	// Initialise Sky/View resources before the view global uniform buffer is built.
@@ -272,7 +275,7 @@ void FMobileSceneRenderer::InitViews(FRHICommandListImmediate& RHICmdList)
 	{
 		InitSkyAtmosphereForViews(RHICmdList);
 	}
-
+	// 完成可见性计算　
 	PostVisibilityFrameSetup(ILCTaskData);
 
 	// Find out whether custom depth pass should be rendered.
@@ -319,6 +322,7 @@ void FMobileSceneRenderer::InitViews(FRHICommandListImmediate& RHICmdList)
 		}
 
 		// Initialize the view's RHI resources.
+		// 初始化视图的RHI
 		Views[ViewIndex].InitRHIResources();
 
 		// TODO: remove when old path is removed

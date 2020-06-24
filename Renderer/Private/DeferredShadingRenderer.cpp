@@ -1734,6 +1734,8 @@ void FDeferredShadingSceneRenderer::Render(FRHICommandListImmediate& RHICmdList)
 
 	checkSlow(RHICmdList.IsOutsideRenderPass());
 
+	
+	// test
 
 
 	const bool bShouldRenderVelocities = ShouldRenderVelocities();	
@@ -2745,8 +2747,7 @@ void FDeferredShadingSceneRenderer::Render(FRHICommandListImmediate& RHICmdList)
 
 	CopySceneCaptureComponentToTarget(RHICmdList);
 
-	// this
-
+	// this victor
 
 
 	// Finish rendering for each view.

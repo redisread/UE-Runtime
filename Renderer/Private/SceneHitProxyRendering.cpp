@@ -182,13 +182,13 @@ public:
 
 		FHitProxyId hitProxyId = ShaderElementData.BatchHitProxyId;
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 		if (PrimitiveSceneProxy && PrimitiveSceneProxy->GetCustomHitProxyIdBuffer())
 		{
 			hitProxyId = FColor(0);
 		}
 		else 
-#endif
+//#endif
 		if (PrimitiveSceneProxy && ShaderElementData.BatchHitProxyId == FHitProxyId())
 		{
 			hitProxyId = PrimitiveSceneProxy->GetPrimitiveSceneInfo()->DefaultDynamicHitProxyId;
@@ -209,7 +209,7 @@ private:
 
 IMPLEMENT_MATERIAL_SHADER_TYPE(,FHitProxyPS,TEXT("/Engine/Private/HitProxyPixelShader.usf"),TEXT("Main"),SF_Pixel);
 
-#if WITH_EDITOR
+// #if WITH_EDITOR Delete Victor
 
 void InitHitProxyRender(FRHICommandListImmediate& RHICmdList, const FSceneRenderer* SceneRenderer, TRefCountPtr<IPooledRenderTarget>& OutHitProxyRT, TRefCountPtr<IPooledRenderTarget>& OutHitProxyDepthRT)
 {
@@ -499,6 +499,8 @@ static void DoRenderHitProxies(FRHICommandListImmediate& RHICmdList, const FScen
 			DrawRenderState.SetDepthStencilState(TStaticDepthStencilState<false, CF_Always>::GetRHI());
 			DrawRenderState.SetBlendState(TStaticBlendState<>::GetRHI());
 
+
+			// 注释掉此处会导致无法点选
 			BatchedElements.Draw(
 				RHICmdList,
 				DrawRenderState,
@@ -511,10 +513,38 @@ static void DoRenderHitProxies(FRHICommandListImmediate& RHICmdList, const FScen
 		}
 		RHICmdList.EndRenderPass();
 	}
-
+	
 	RHICmdList.EndScene();
+	//FVector2D fsize;
+	//GWorld->GetGameViewport()->GetViewportSize(fsize);
+	//FIntRect ViewportRect(0, 0, fsize.X, fsize.Y);
+	//TArray<FColor> HitProxyData;
+	//struct FReadSurfaceContext
+	//{
+	//	FViewport* Viewport;
+	//	TArray<FColor>* OutData;
+	//	FIntRect Rect;
+	//};
+	//FReadSurfaceContext Context =
+	//{
+	//	GWorld->GetGameViewport()->Viewport,
+	//	&HitProxyData,
+	//	ViewportRect
+	//};
+
+	//ENQUEUE_RENDER_COMMAND(ReadSurfaceCommand)(
+	//	[Context, HitProxyRT](FRHICommandListImmediate& RHICmdList)
+	//{
+	//	RHICmdList.ReadSurfaceData(
+	//		HitProxyRT->GetRenderTargetItem().ShaderResourceTexture,
+	//		Context.Rect,
+	//		*Context.OutData,
+	//		FReadSurfaceDataFlags()
+	//	);
+	//});
+	//FlushRenderingCommands();
 }
-#endif
+//#endif
 
 void FMobileSceneRenderer::RenderHitProxies(FRHICommandListImmediate& RHICmdList)
 {
@@ -553,7 +583,7 @@ void FDeferredShadingSceneRenderer::RenderHitProxies(FRHICommandListImmediate& R
 
 	PrepareViewRectsForRendering();
 
-#if WITH_EDITOR
+// #if WITH_EDITOR Delete Victor
 	// HitProxyRT==0 should never happen but better we don't crash
 	TRefCountPtr<IPooledRenderTarget> HitProxyRT;
 	TRefCountPtr<IPooledRenderTarget> HitProxyDepthRT;
@@ -623,10 +653,10 @@ void FDeferredShadingSceneRenderer::RenderHitProxies(FRHICommandListImmediate& R
 		::DoRenderHitProxies(RHICmdList, this, HitProxyRT, HitProxyDepthRT);
 	}
 	check(RHICmdList.IsOutsideRenderPass());
-#endif
+//#endif
 }
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 
 void FHitProxyMeshProcessor::AddMeshBatch(const FMeshBatch& RESTRICT MeshBatch, uint64 BatchElementMask, const FPrimitiveSceneProxy* RESTRICT PrimitiveSceneProxy, int32 StaticMeshId)
 {
@@ -926,4 +956,4 @@ FMeshPassProcessor* CreateEditorSelectionPassProcessor(const FScene* Scene, cons
 FRegisterPassProcessorCreateFunction RegisterEditorSelectionPass(&CreateEditorSelectionPassProcessor, EShadingPath::Deferred, EMeshPass::EditorSelection, EMeshPassFlags::MainView);
 FRegisterPassProcessorCreateFunction RegisterMobileEditorSelectionPass(&CreateEditorSelectionPassProcessor, EShadingPath::Mobile, EMeshPass::EditorSelection, EMeshPassFlags::MainView);
 
-#endif
+//#endif
