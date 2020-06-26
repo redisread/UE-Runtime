@@ -669,6 +669,7 @@ FSceneView::FSceneView(const FSceneViewInitOptions& InitOptions)
 	, bForceCameraVisibilityReset(false)
 	, GlobalClippingPlane(FPlane(0, 0, 0, 0))
 	, LensPrincipalPointOffsetScale(0.0f, 0.0f, 1.0f, 1.0f)
+// Delete Victor
 #if WITH_EDITOR
 	, OverrideLODViewOrigin(InitOptions.OverrideLODViewOrigin)
 #endif
