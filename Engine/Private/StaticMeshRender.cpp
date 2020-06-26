@@ -897,7 +897,7 @@ bool FStaticMeshSceneProxy::IsReversedCullingNeeded(bool bUseReversedIndices) co
 }
 
 // FPrimitiveSceneProxy interface.
-#if WITH_EDITOR
+//#if WITH_EDITOR
 HHitProxy* FStaticMeshSceneProxy::CreateHitProxies(UPrimitiveComponent* Component, TArray<TRefCountPtr<HHitProxy> >& OutHitProxies)
 {
 	// In order to be able to click on static meshes when they're batched up, we need to have catch all default
@@ -941,7 +941,7 @@ HHitProxy* FStaticMeshSceneProxy::CreateHitProxies(UPrimitiveComponent* Componen
 	
 	return DefaultHitProxy;
 }
-#endif // WITH_EDITOR
+//#endif // WITH_EDITOR
 
 // use for render thread only
 bool UseLightPropagationVolumeRT2(ERHIFeatureLevel::Type InFeatureLevel)

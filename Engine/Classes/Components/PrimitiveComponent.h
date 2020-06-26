@@ -525,10 +525,10 @@ public:
 	TEnumAsByte<EHasCustomNavigableGeometry::Type> bHasCustomNavigableGeometry;
 
 public:
-#if WITH_EDITORONLY_DATA
+//#if WITH_EDITORONLY_DATA
 		UPROPERTY()
 			TEnumAsByte<enum EHitProxyPriority> HitProxyPriority;
-#endif
+//#endif
 
 private:
 #if WITH_EDITORONLY_DATA

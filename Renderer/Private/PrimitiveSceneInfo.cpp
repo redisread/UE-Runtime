@@ -38,12 +38,12 @@ public:
 		if(HitProxy)
 		{
 			// Only use static scene primitive hit proxies in the editor.
-			if(GIsEditor)
-			{
+	/*		if(GIsEditor)
+			{*/
 				// Keep a reference to the hit proxy from the FPrimitiveSceneInfo, to ensure it isn't deleted while the static mesh still
 				// uses its id.
 				PrimitiveSceneInfo->HitProxies.Add(HitProxy);
-			}
+		/*	}*/
 		}
 	}
 

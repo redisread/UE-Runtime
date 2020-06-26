@@ -908,9 +908,9 @@ protected:
 
 public:
 	// FPrimitiveSceneProxy interface.
-#if WITH_EDITOR
+//#if WITH_EDITOR
 	virtual HHitProxy* CreateHitProxies(UPrimitiveComponent* Component, TArray<TRefCountPtr<HHitProxy> >& OutHitProxies) override;
-#endif
+//#endif
 	virtual void DrawStaticElements(FStaticPrimitiveDrawInterface* PDI) override;
 	virtual int32 GetLOD(const FSceneView* View) const override;
 	virtual FPrimitiveViewRelevance GetViewRelevance(const FSceneView* View) const override;
@@ -963,10 +963,10 @@ protected:
 			/** Default constructor. */
 			FSectionInfo()
 				: Material(NULL)
-#if WITH_EDITOR
+//#if WITH_EDITOR
 				, bSelected(false)
 				, HitProxy(NULL)
-#endif
+//#endif
 				, FirstPreCulledIndex(0)
 				, NumPreCulledTriangles(-1)
 			{}
@@ -974,13 +974,13 @@ protected:
 			/** The material with which to render this section. */
 			UMaterialInterface* Material;
 
-#if WITH_EDITOR
+//#if WITH_EDITOR
 			/** True if this section should be rendered as selected (editor only). */
 			bool bSelected;
 
 			/** The editor needs to be able to individual sub-mesh hit detection, so we store a hit proxy on each mesh. */
 			HHitProxy* HitProxy;
-#endif
+//#endif
 
 #if WITH_EDITORONLY_DATA
 			// The material index from the component. Used by the texture streaming accuracy viewmodes.
