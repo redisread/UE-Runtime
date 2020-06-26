@@ -2307,7 +2307,7 @@ bool APlayerController::InputKey(FKey Key, EInputEvent EventType, float AmountDe
 				else
 				{
 					//ViewportClient->view View.bAllowTranslucentPrimitivesInHitProxy = true；
-					HHitProxy *hitproxy = ViewportClient->Viewport->GetHitProxy(MousePosition.X, MousePosition.Y);
+					//HHitProxy *hitproxy = ViewportClient->Viewport->GetHitProxy(MousePosition.X, MousePosition.Y);
 					FHitResult HitResult;
 					const bool bHit = GetHitResultAtScreenPosition(MousePosition, CurrentClickTraceChannel, true, HitResult);
 					if (bHit)
