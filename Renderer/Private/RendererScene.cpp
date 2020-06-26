@@ -925,9 +925,9 @@ void FPersistentUniformBuffers::Clear()
 		UniformBuffer.SafeRelease();
 	}
 	MobileSkyReflectionUniformBuffer.SafeRelease();
-#if WITH_EDITOR
+//#if WITH_EDITOR
 	EditorSelectionPassUniformBuffer.SafeRelease();
-#endif
+//#endif
 }
 void FPersistentUniformBuffers::Initialize()
 {
@@ -1010,10 +1010,10 @@ void FPersistentUniformBuffers::Initialize()
 	FMobileReflectionCaptureShaderParameters MobileSkyReflectionShaderParameters;
 	MobileSkyReflectionUniformBuffer = TUniformBufferRef<FMobileReflectionCaptureShaderParameters>::CreateUniformBufferImmediate(MobileSkyReflectionShaderParameters, UniformBuffer_MultiFrame, EUniformBufferValidation::None);
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 	FSceneTexturesUniformParameters EditorSelectionPassParameters;
 	EditorSelectionPassUniformBuffer = TUniformBufferRef<FSceneTexturesUniformParameters>::CreateUniformBufferImmediate(EditorSelectionPassParameters, UniformBuffer_MultiFrame, EUniformBufferValidation::None);
-#endif
+//#endif
 }
 
 TSet<IPersistentViewUniformBufferExtension*> PersistentViewUniformBufferExtensions;

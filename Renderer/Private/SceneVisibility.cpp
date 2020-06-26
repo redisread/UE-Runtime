@@ -2375,12 +2375,12 @@ struct FRelevancePacket
 							}
 						}
 
-#if WITH_EDITOR
+//#if WITH_EDITOR //delete Victor
 						if (ViewRelevance.bEditorStaticSelectionRelevance)
 						{
 							DrawCommandPacket.AddCommandsForMesh(PrimitiveIndex, PrimitiveSceneInfo, StaticMeshRelevance, StaticMesh, Scene, bCanCache, EMeshPass::EditorSelection);
 						}
-#endif
+//#endif
 
 						if (ViewRelevance.bHasVolumeMaterialDomain)
 						{
@@ -3786,7 +3786,7 @@ void FSceneRenderer::ComputeViewVisibility(FRHICommandListImmediate& RHICmdList,
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 		if( ViewState )
 		{
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 			// For visibility child views, check if the primitive was visible in the parent view.
 			const FSceneViewState* const ViewParent = (FSceneViewState*)ViewState->GetViewParent();
 			if(ViewParent)
@@ -3800,7 +3800,7 @@ void FSceneRenderer::ComputeViewVisibility(FRHICommandListImmediate& RHICmdList,
 					}
 				}
 			}
-#endif
+//#endif
 			// For views with frozen visibility, check if the primitive is in the frozen visibility set.
 			if(ViewState->bIsFrozen)
 			{

@@ -288,7 +288,7 @@ void FRendererModule::DrawTileMesh(FRHICommandListImmediate& RHICmdList, FMeshPa
 			{
 				ensureMsgf(HitProxyId == Mesh.BatchHitProxyId, TEXT("Only Mesh.BatchHitProxyId is used for hit testing."));
 
-#if WITH_EDITOR
+//#if WITH_EDITOR Delete Victor
 				DrawDynamicMeshPass(View, RHICmdList,
 					[Scene, &View, &DrawRenderState, &Mesh](FDynamicPassMeshDrawListContext* DynamicMeshPassContext)
 				{
@@ -302,7 +302,7 @@ void FRendererModule::DrawTileMesh(FRHICommandListImmediate& RHICmdList, FMeshPa
 					const uint64 DefaultBatchElementMask = ~0ull;
 					PassMeshProcessor.AddMeshBatch(Mesh, DefaultBatchElementMask, nullptr);
 				});
-#endif
+//#endif
 			}
 			else
 			{
