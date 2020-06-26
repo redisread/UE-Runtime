@@ -1151,11 +1151,11 @@ FViewport::FViewport(FViewportClient* InViewportClient):
 {
 	//initialize the hit proxy kernel
 	HitProxySize = 5;
-	if (GIsEditor) 
-	{
+	//if (GIsEditor) //delete Victor
+	//{
 		GConfig->GetInt( TEXT("UnrealEd.HitProxy"), TEXT("HitProxySize"), (int32&)HitProxySize, GEditorIni );
 		HitProxySize = FMath::Clamp( HitProxySize, (uint32)1, (uint32)MAX_HITPROXYSIZE );
-	}
+	//}
 
 	// Cache the viewport client's hit proxy storage requirement.
 	bRequiresHitProxyStorage = ViewportClient && ViewportClient->RequiresHitProxyStorage();

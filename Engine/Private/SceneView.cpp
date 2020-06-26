@@ -671,7 +671,10 @@ FSceneView::FSceneView(const FSceneViewInitOptions& InitOptions)
 	, LensPrincipalPointOffsetScale(0.0f, 0.0f, 1.0f, 1.0f)
 #if WITH_EDITOR
 	, OverrideLODViewOrigin(InitOptions.OverrideLODViewOrigin)
+#endif
 	, bAllowTranslucentPrimitivesInHitProxy( true )
+#if WITH_EDITOR
+
 	, bHasSelectedComponents( false )
 #endif
 	, AntiAliasingMethod(AAM_None)
