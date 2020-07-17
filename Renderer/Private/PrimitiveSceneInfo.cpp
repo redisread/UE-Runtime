@@ -167,7 +167,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 	// @Victor
 	//if (GIsEditor)
 	//{
-		// Create a dynamic hit proxy for the primitive. 
+	// Create a dynamic hit proxy for the primitive. 
 	DefaultDynamicHitProxy = Proxy->CreateHitProxies(InComponent, HitProxies);
 	if (DefaultDynamicHitProxy)
 	{
@@ -176,13 +176,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 	//}
 	//
 	//////// victor 
-	//else if (GWorld->HasBegunPlay()) {
-	//	DefaultDynamicHitProxy = Proxy->CreateHitProxies(InComponent, HitProxies);
-	//	if (DefaultDynamicHitProxy)
-	//	{
-	//		DefaultDynamicHitProxyId = DefaultDynamicHitProxy->Id;
-	//	}
-	//}
+
 
 
 	// set LOD parent info if exists

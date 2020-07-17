@@ -24,6 +24,8 @@
 #include "FXSystem.h"
 #include "GPUSortManager.h"
 
+class FHitproxyMeshProcessor;
+
 class FHitProxyShaderElementData : public FMeshMaterialShaderElementData
 {
 public:
@@ -660,7 +662,7 @@ void FDeferredShadingSceneRenderer::RenderHitProxies(FRHICommandListImmediate& R
 
 void FHitProxyMeshProcessor::AddMeshBatch(const FMeshBatch& RESTRICT MeshBatch, uint64 BatchElementMask, const FPrimitiveSceneProxy* RESTRICT PrimitiveSceneProxy, int32 StaticMeshId)
 {
-	if (MeshBatch.bUseForMaterial && MeshBatch.bSelectable && Scene->RequiresHitProxies() && (!PrimitiveSceneProxy || PrimitiveSceneProxy->IsSelectable()))
+	if (/*MeshBatch.bUseForMaterial*/1 /*&& MeshBatch.bSelectable && Scene->RequiresHitProxies() && (!PrimitiveSceneProxy || PrimitiveSceneProxy->IsSelectable())*/)
 	{
 		// Determine the mesh's material and blend mode.
 		const FMaterialRenderProxy* MaterialRenderProxy = nullptr;
@@ -791,6 +793,7 @@ FHitProxyMeshProcessor::FHitProxyMeshProcessor(const FScene* Scene, const FScene
 	, PassDrawRenderState(InRenderState)
 	, bAllowTranslucentPrimitivesInHitProxy(InbAllowTranslucentPrimitivesInHitProxy)
 {
+	//GEngine->AddOnScreenDebugMessage(-1, -1, FColor::Red, FString("sa"));
 }
 
 FMeshPassProcessor* CreateHitProxyPassProcessor(const FScene* Scene, const FSceneView* InViewIfDynamicMeshCommand, FMeshPassDrawListContext* InDrawListContext)

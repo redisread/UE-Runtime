@@ -49,47 +49,55 @@
 #include "PixelShaderUtils.h"
 #include "ScreenSpaceRayTracing.h"
 
+
+#include "DepthResourceManager.h"
+#include "PostProcessDepthCapture.h"
+
+#include "PostProcess/PostProcessVideoTexture.h"
+
+
 /** The global center for all post processing activities. */
 FPostProcessing GPostProcessing;
 
-
-/*类静态成员的定义*/
-TQueue<DepthResult *, EQueueMode::Mpsc> DepthCapture::waitForCapture;
-TQueue< DepthResult *, EQueueMode::Mpsc> DepthCapture::finishedCapture;
-
-/*获取深度缓存*/
-void AddDepthInspectorPass(FRDGBuilder& GraphBuilder, const FViewInfo& View, DepthResult* result)
-{
-
-	RDG_EVENT_SCOPE(GraphBuilder, "DepthInspector");
-	{
-		// 获取渲染对象
-		FSceneRenderTargets& renderTargets = FSceneRenderTargets::Get(GRHICommandList.GetImmediateCommandList());
-
-		// 定义拷贝参数
-		uint32 striped = 0;
-		FIntPoint size = renderTargets.GetBufferSizeXY();
-		result->bufferSizeX = size.X;
-		result->bufferSizeY = size.Y;
-		result->data.AddUninitialized(size.X * size.Y);
-
-		// 获取视窗某一帧的深度缓存对象
-		FRHITexture2D* depthTexture = (FRHITexture2D *)renderTargets.SceneDepthZ->GetRenderTargetItem().TargetableTexture.GetReference();
-
-		// 执行拷贝深度缓存操作，将GPU显存中的缓存信息拷贝到CPU内存中，返回指向这块CPU内存的首地址
-		void* buffer = RHILockTexture2D(depthTexture, 0, EResourceLockMode::RLM_ReadOnly, striped, true);
-
-		// 将缓存结果拷贝到result，用于输出
-		memcpy(result->data.GetData(), buffer, size.X * size.Y * 8);
-
-		// 必须执行解锁语句，否则被锁住的GPU缓存信息将不能释放
-		RHIUnlockTexture2D(depthTexture, 0, true);
-
-		// 拷贝结果入队
-		DepthCapture::FinishedCapture(result);
-	}
-}
-////////////////////////////////////////
+//
+///*类静态成员的定义*/
+//TQueue<DepthResult *, EQueueMode::Mpsc> DepthCapture::waitForCapture;
+//TQueue< DepthResult *, EQueueMode::Mpsc> DepthCapture::finishedCapture;
+//
+///*获取深度缓存*/
+//void AddDepthInspectorPass(FRDGBuilder& GraphBuilder, const FViewInfo& View, DepthResult* result)
+//{
+//
+//	RDG_EVENT_SCOPE(GraphBuilder, "DepthInspector");
+//	{
+//		// 获取渲染对象
+//		FSceneRenderTargets& renderTargets = FSceneRenderTargets::Get(GRHICommandList.GetImmediateCommandList());
+//
+//		// 定义拷贝参数
+//		uint32 striped = 0;
+//		FIntPoint size = renderTargets.GetBufferSizeXY();
+//		result->bufferSizeX = size.X;
+//		result->bufferSizeY = size.Y;
+//		result->pixelSizeBytes = sizeof(DepthPixel);
+//		result->data.AddUninitialized(size.X * size.Y);
+//
+//		// 获取视窗某一帧的深度缓存对象
+//		FRHITexture2D* depthTexture = (FRHITexture2D *)renderTargets.SceneDepthZ->GetRenderTargetItem().TargetableTexture.GetReference();
+//
+//		// 执行拷贝深度缓存操作，将GPU显存中的缓存信息拷贝到CPU内存中，返回指向这块CPU内存的首地址
+//		void* buffer = RHILockTexture2D(depthTexture, 0, EResourceLockMode::RLM_ReadOnly, striped, true);
+//
+//		// 将缓存结果拷贝到result，用于输出
+//		memcpy(result->data.GetData(), buffer, size.X * size.Y * 8);
+//
+//		// 必须执行解锁语句，否则被锁住的GPU缓存信息将不能释放
+//		RHIUnlockTexture2D(depthTexture, 0, true);
+//
+//		// 拷贝结果入队
+//		DepthCapture::FinishedCapture(result);
+//	}
+//}
+//////////////////////////////////////////
 
 
 bool IsMobileEyeAdaptationEnabled(const FViewInfo& View);
@@ -291,6 +299,7 @@ void AddPostProcessingPasses(FRDGBuilder& GraphBuilder, const FViewInfo& View, c
 		VisualizeDepthOfField,
 		VisualizeStationaryLightOverlap,
 		VisualizeLightCulling,
+		VideoTexture,
 		SelectionOutline,
 		EditorPrimitive,
 		VisualizeShadingModels,
@@ -315,6 +324,7 @@ void AddPostProcessingPasses(FRDGBuilder& GraphBuilder, const FViewInfo& View, c
 		TEXT("VisualizeDepthOfField"),
 		TEXT("VisualizeStationaryLightOverlap"),
 		TEXT("VisualizeLightCulling"),
+		TEXT("VideoTexture"),
 		TEXT("SelectionOutline"),
 		TEXT("EditorPrimitive"),
 		TEXT("VisualizeShadingModels"),
@@ -335,6 +345,7 @@ void AddPostProcessingPasses(FRDGBuilder& GraphBuilder, const FViewInfo& View, c
 	PassSequence.SetNames(PassNames, UE_ARRAY_COUNT(PassNames));
 	PassSequence.SetEnabled(EPass::VisualizeStationaryLightOverlap, EngineShowFlags.StationaryLightOverlap);
 	PassSequence.SetEnabled(EPass::VisualizeLightCulling, EngineShowFlags.VisualizeLightCulling);
+	PassSequence.SetEnabled(EPass::VideoTexture, HasVideoTexture());
 #if WITH_EDITOR
 	PassSequence.SetEnabled(EPass::SelectionOutline, GIsEditor && EngineShowFlags.Selection && EngineShowFlags.SelectionOutline && !EngineShowFlags.Wireframe && !bVisualizeHDR);
 	PassSequence.SetEnabled(EPass::EditorPrimitive, FSceneRenderer::ShouldCompositeEditorPrimitives(View));
@@ -769,6 +780,17 @@ void AddPostProcessingPasses(FRDGBuilder& GraphBuilder, const FViewInfo& View, c
 	{
 		AddVisualizeLPVPass(GraphBuilder, View, SceneColor);
 	}
+	
+	if (PassSequence.IsEnabled(EPass::VideoTexture))
+	{
+		FVideoTextureInputs PassInputs;
+		PassSequence.AcceptOverrideIfLastPass(EPass::VideoTexture, PassInputs.OverrideOutput);
+		PassInputs.SceneColor = SceneColor;
+		PassInputs.SceneDepth = SceneDepth;
+
+		SceneColor = AddVideoTexturePass(GraphBuilder, View, PassInputs);
+	}
+
 
 #if WITH_EDITOR
 	if (PassSequence.IsEnabled(EPass::SelectionOutline))
@@ -863,10 +885,10 @@ void AddPostProcessingPasses(FRDGBuilder& GraphBuilder, const FViewInfo& View, c
 
 
 	// Capture depth buffer，otherwise the buffer will be changed
-	if (DepthCapture::HasCaptureRequest())
+	if (DepthCapture::Get().HasCaptureRequest())
 	{
 		DepthResult *reuslt;
-		reuslt = DepthCapture::GetIfExistRequest();
+		reuslt = DepthCapture::Get().GetIfExistRequest();
 		if (reuslt)
 		{
 			AddDepthInspectorPass(GraphBuilder, View, reuslt);

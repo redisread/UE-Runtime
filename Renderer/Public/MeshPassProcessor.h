@@ -40,7 +40,7 @@ namespace EMeshPass
 		MobileInverseOpacity,  /** Mobile specific scene capture, Non-cached */
 		VirtualTexture,
 
-//#if WITH_EDITOR Delete Victor
+//#if WITH_EDITOR // Delete By Victor
 		HitProxy,
 		HitProxyOpaqueOnly,
 		EditorSelection,
